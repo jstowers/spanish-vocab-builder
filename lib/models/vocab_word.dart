@@ -3,7 +3,7 @@ class VocabWord {
   final String spanish;
   final String english;
   final String partOfSpeech;
-  final String? dateTime;
+  final String? timestamp;
   final String? notes;
 
   VocabWord({
@@ -11,7 +11,7 @@ class VocabWord {
     required this.spanish,
     required this.english,
     required this.partOfSpeech,
-    this.dateTime,
+    this.timestamp,
     this.notes,
   });
 
@@ -20,7 +20,7 @@ class VocabWord {
       'spanish': spanish,
       'english': english,
       'partOfSpeech': partOfSpeech,
-      'dateTime': dateTime,
+      'timestamp': timestamp,
       'notes': notes,
     };
   }
@@ -31,7 +31,7 @@ class VocabWord {
       spanish: map['spanish'] ?? '',
       english: map['english'] ?? '',
       partOfSpeech: map['partOfSpeech'] ?? '',
-      dateTime: map['dateTime'] ?? map['timestamp'], // Support both old and new field names
+      timestamp: map['timestamp'],
       notes: map['notes'],
     );
   }
@@ -41,7 +41,7 @@ class VocabWord {
     String? spanish,
     String? english,
     String? partOfSpeech,
-    String? dateTime,
+    String? timestamp,
     String? notes,
   }) {
     return VocabWord(
@@ -49,7 +49,7 @@ class VocabWord {
       spanish: spanish ?? this.spanish,
       english: english ?? this.english,
       partOfSpeech: partOfSpeech ?? this.partOfSpeech,
-      dateTime: dateTime ?? this.dateTime,
+      timestamp: timestamp ?? this.timestamp,
       notes: notes ?? this.notes,
     );
   }

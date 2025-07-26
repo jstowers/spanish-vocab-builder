@@ -54,7 +54,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
       spanish: _spanishController.text.trim(),
       english: _englishController.text.trim(),
       partOfSpeech: _selectedPartOfSpeech,
-      dateTime: _originalWord.dateTime,
+      timestamp: _originalWord.timestamp,
       notes: _notesController.text.trim(),
     );
 
@@ -133,11 +133,13 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             // Date and Time field (not editable)
             TextField(
               enabled: false,
-              decoration: InputDecoration(
+              controller: TextEditingController(
+                text: _originalWord.timestamp ?? 'No timestamp available',
+              ),
+              decoration: const InputDecoration(
                 labelText: 'Date and Time',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.access_time),
-                hintText: _originalWord.dateTime ?? 'No date available',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.access_time),
               ),
             ),
             const SizedBox(height: 16),

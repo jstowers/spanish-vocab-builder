@@ -3,8 +3,59 @@ import '../models/vocab_word.dart';
 import '../services/firebase_service.dart';
 import 'word_detail_screen.dart';
 
-class ShowWordsScreen extends StatelessWidget {
-  const ShowWordsScreen({super.key});
+class ShowWordsScreen extends StatefulWidget {
+  final String? highlightWord;
+
+  const ShowWordsScreen({
+    super.key,
+    this.highlightWord,
+  });
+
+  @override
+  State<ShowWordsScreen> createState() => _ShowWordsScreenState();
+}
+
+class _ShowWordsScreenState extends State<ShowWordsScreen> with TickerProviderStateMixin {
+  String? _highlightedWord;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _highlightedWord = widget.highlightWord;
+    
+    // Setup animation for highlighting
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    
+    // Clear the highlight after 3 seconds
+    if (_highlightedWord != null) {
+      _animationController.forward();
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted) {
+          _animationController.reverse().then((_) {
+            if (mounted) {
+              setState(() {
+                _highlightedWord = null;
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +154,14 @@ class ShowWordsScreen extends StatelessWidget {
                 ),
               ],
               rows: words.map((word) {
+                final isHighlighted = _highlightedWord == word.spanish;
+                
                 return DataRow(
+                  color: isHighlighted 
+                    ? WidgetStateProperty.all(
+                        Colors.yellow.withValues(alpha: 0.3 * _animation.value)
+                      )
+                    : null,
                   cells: [
                     DataCell(
                       GestureDetector(
@@ -117,8 +175,9 @@ class ShowWordsScreen extends StatelessWidget {
                         },
                         child: Text(
                           word.spanish,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w500,
+                            color: isHighlighted ? Colors.orange.shade800 : null,
                           ),
                         ),
                       ),
@@ -133,7 +192,12 @@ class ShowWordsScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        child: Text(word.english),
+                        child: Text(
+                          word.english,
+                          style: TextStyle(
+                            color: isHighlighted ? Colors.orange.shade800 : null,
+                          ),
+                        ),
                       ),
                     ),
                     DataCell(
@@ -152,7 +216,9 @@ class ShowWordsScreen extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: _getPartOfSpeechColor(word.partOfSpeech),
+                            color: isHighlighted 
+                              ? Colors.orange.shade600 
+                              : _getPartOfSpeechColor(word.partOfSpeech),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/vocab_word.dart';
 import '../services/firebase_service.dart';
+import 'show_words_screen.dart';
 
 class AddWordScreen extends StatefulWidget {
   const AddWordScreen({super.key});
@@ -53,7 +54,17 @@ class _AddWordScreenState extends State<AddWordScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+        
+        // Navigate to show words screen with the new word highlighted
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowWordsScreen(
+              highlightWord: word.spanish,
+            ),
+          ),
+          (route) => false, // Remove all previous routes
+        );
       }
     } catch (e) {
       if (mounted) {

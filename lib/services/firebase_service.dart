@@ -22,7 +22,6 @@ class FirebaseService {
         'partOfSpeech': word.partOfSpeech,
         'source': 'app',
         'timestamp': timestamp,
-        'dateTime': timestamp,
         'notes': word.notes,
       };
 
