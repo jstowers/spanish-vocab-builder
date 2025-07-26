@@ -4,7 +4,7 @@ Saturday, July 26, 2025
 
 ## Motivation
 
-I want to use Cursor to build a Dart/Flutter mobile app that allows me to enter Spanish words and their English definitions and saves them in a Google Firebase database.
+I want to use [Cursor](https://cursor.com/en) to build a Dart/Flutter mobile app that allows me to enter Spanish words and their English definitions and saves them in a Google Firebase database.
 
 I want to explore and understand Cursor's functionality, interactions, and limitations, especially as it relates to Dart/Flutter mobile development.
 
