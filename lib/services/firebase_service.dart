@@ -22,6 +22,8 @@ class FirebaseService {
         'partOfSpeech': word.partOfSpeech,
         'source': 'app',
         'timestamp': timestamp,
+        'dateTime': timestamp,
+        'notes': word.notes,
       };
 
       // add the document and get the DocumentReference ID
@@ -39,6 +41,21 @@ class FirebaseService {
         print('FirebaseException message: ${e.message}');
       }
       throw Exception('Failed to add word $word.spanish -> $word.english.');
+    }
+  }
+
+  /// updateVocabWord takes a VocabWord object and updates the corresponding
+  /// document in the database.
+  Future<void> updateVocabWord(VocabWord word) async {
+    try {
+      await _firestore.collection(_collection).doc(word.id).update({
+        'spanish': word.spanish,
+        'english': word.english,
+        'partOfSpeech': word.partOfSpeech,
+        'notes': word.notes,
+      });
+    } catch (e) {
+      throw Exception('Failed to update word: $e');
     }
   }
 

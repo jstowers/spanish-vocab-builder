@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/vocab_word.dart';
 import '../services/firebase_service.dart';
+import 'word_detail_screen.dart';
 
 class ShowWordsScreen extends StatelessWidget {
   const ShowWordsScreen({super.key});
@@ -100,51 +101,69 @@ class ShowWordsScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                DataColumn(
-                  label: Text(
-                    'Actions',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
               ],
               rows: words.map((word) {
                 return DataRow(
                   cells: [
                     DataCell(
-                      Text(
-                        word.spanish,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      Text(word.english),
-                    ),
-                    DataCell(
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _getPartOfSpeechColor(word.partOfSpeech),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WordDetailScreen(word: word),
+                            ),
+                          );
+                        },
                         child: Text(
-                          word.partOfSpeech,
+                          word.spanish,
                           style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ),
                     DataCell(
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _showDeleteDialog(context, word, firebaseService),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WordDetailScreen(word: word),
+                            ),
+                          );
+                        },
+                        child: Text(word.english),
+                      ),
+                    ),
+                    DataCell(
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WordDetailScreen(word: word),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _getPartOfSpeechColor(word.partOfSpeech),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            word.partOfSpeech,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -172,52 +191,5 @@ class ShowWordsScreen extends StatelessWidget {
       default:
         return Colors.grey;
     }
-  }
-
-  void _showDeleteDialog(BuildContext context, VocabWord word, FirebaseService firebaseService) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Word'),
-          content: Text('Are you sure you want to delete "${word.spanish}"?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                try {
-                  await firebaseService.deleteVocabWord(word.id);
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Word deleted successfully'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Error deleting word: $e'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
-              },
-              child: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 } 
