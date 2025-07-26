@@ -1,0 +1,116 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# Installation notes
+**/INSTALLATION_NOTES.md
+
+# IntelliJ or Android Studio related
+**/.idea/
+**/*.iml
+**/*.ipr
+**/*.iws
+
+# Android Studio build artifacts
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# VS Code configuration
+.vscode/
+
+# Flutter/Dart/Pub related
+build/
+.dart_tool/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# ** SECURITY: Firebase Configuration Files **
+google-services.json
+GoogleService-Info.plist
+**/ios/Runner/GoogleService-Info.plist
+**/android/app/google-services.json
+**/lib/firebase_options.dart
+
+# ** SECURITY: Environment and Configuration Files **
+.env
+.env.local
+.env.development
+.env.production
+*.env
+
+# ** SECURITY: Keystore and Signing Files **
+*.keystore
+*.jks
+key.properties
+**/android/key.properties
+
+# ** SECURITY: API Keys and Secrets **
+secrets.json
+api_keys.json
+config.json
+
+# Build and generated files
+*.g.dart
+*.freezed.dart
+**/generated/
+**/generated_plugin_registrant.dart
+
+# iOS specific
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Android specific
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Test Coverage
+coverage/
+*.lcov
+
+# Temporary Files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# **Logs**
+*.log
+logs/

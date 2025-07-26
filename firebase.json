@@ -1,0 +1,30 @@
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "spanish-vocab-builder-466407",
+                    "configurations": {
+                        "android": "1:702670805589:android:4d7fd5e7627237bed812dc",
+                        "ios": "1:702670805589:ios:89af0054da1e084fd812dc"
+                    }
+                }
+            },
+            "android": {
+                "default": {
+                    "projectId": "spanish-vocab-builder-466407",
+                    "appId": "1:702670805589:android:4d7fd5e7627237bed812dc",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "spanish-vocab-builder-466407",
+                    "appId": "1:702670805589:ios:89af0054da1e084fd812dc",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            }
+        }
+    }
+}
