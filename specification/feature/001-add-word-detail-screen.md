@@ -23,3 +23,9 @@ Secondary button - Delete word - this button, when clicked, should have a popup 
 # Delete Word in Firestore
 
 When delete is confirmed, the document ID for the word should be referenced and sent via Firestore API to delete the word in the collection.
+
+# Issues
+
+1. When I update the Spanish or English text in the Word Detail screen, the update is not saved in the database.  FIXED.
+
+2. When I add a note in the Word Detail Screen, the note is not saved in the database.  FIXED.

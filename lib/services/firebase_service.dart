@@ -47,13 +47,24 @@ class FirebaseService {
   /// document in the database.
   Future<void> updateVocabWord(VocabWord word) async {
     try {
-      await _firestore.collection(_collection).doc(word.id).update({
+      final updateData = {
         'spanish': word.spanish,
         'english': word.english,
         'partOfSpeech': word.partOfSpeech,
         'notes': word.notes,
-      });
+      };
+      
+      // Debug logging
+      print('FirebaseService: Updating word ${word.spanish} with data: $updateData');
+      print('FirebaseService: Notes value: "${word.notes}"');
+      print('FirebaseService: Notes type: ${word.notes.runtimeType}');
+      print('FirebaseService: Notes is null: ${word.notes == null}');
+      print('FirebaseService: Notes is empty string: ${word.notes == ""}');
+      
+      await _firestore.collection(_collection).doc(word.id).update(updateData);
+      print('FirebaseService: Word updated successfully');
     } catch (e) {
+      print('FirebaseService: Error updating word: $e');
       throw Exception('Failed to update word: $e');
     }
   }
@@ -68,7 +79,11 @@ class FirebaseService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        return VocabWord.fromMap(doc.id, doc.data());
+        final data = doc.data();
+        print('FirebaseService: Retrieved word ${data['spanish']} with notes: "${data['notes']}"');
+        print('FirebaseService: Notes type: ${data['notes']?.runtimeType}');
+        print('FirebaseService: Notes is null: ${data['notes'] == null}');
+        return VocabWord.fromMap(doc.id, data);
       }).toList();
     });
   }

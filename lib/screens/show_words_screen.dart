@@ -130,112 +130,153 @@ class _ShowWordsScreenState extends State<ShowWordsScreen> with TickerProviderSt
             );
           }
 
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: const [
-                DataColumn(
-                  label: Text(
-                    'Spanish',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'English',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Part of Speech',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-              rows: words.map((word) {
-                final isHighlighted = _highlightedWord == word.spanish;
-                
-                return DataRow(
-                  color: isHighlighted 
-                    ? WidgetStateProperty.all(
-                        Colors.yellow.withValues(alpha: 0.3 * _animation.value)
-                      )
-                    : null,
-                  cells: [
-                    DataCell(
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WordDetailScreen(word: word),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          word.spanish,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: isHighlighted ? Colors.orange.shade800 : null,
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(
+                          label: Text(
+                            'Spanish',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
+                        DataColumn(
+                          label: Text(
+                            'English',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Part of Speech',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                      rows: words.map((word) {
+                        final isHighlighted = _highlightedWord == word.spanish;
+                        
+                        return DataRow(
+                          color: isHighlighted 
+                            ? WidgetStateProperty.all(
+                                Colors.yellow.withValues(alpha: 0.3 * _animation.value)
+                              )
+                            : null,
+                          cells: [
+                            DataCell(
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WordDetailScreen(word: word),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  word.spanish,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: isHighlighted ? Colors.orange.shade800 : null,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WordDetailScreen(word: word),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  word.english,
+                                  style: TextStyle(
+                                    color: isHighlighted ? Colors.orange.shade800 : null,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WordDetailScreen(word: word),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isHighlighted 
+                                      ? Colors.orange.shade600 
+                                      : _getPartOfSpeechColor(word.partOfSpeech),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    word.partOfSpeech,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+              // Footer
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border(
+                    top: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${words.length} word${words.length == 1 ? '' : 's'}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        fontSize: 14,
                       ),
                     ),
-                    DataCell(
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WordDetailScreen(word: word),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          word.english,
-                          style: TextStyle(
-                            color: isHighlighted ? Colors.orange.shade800 : null,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DataCell(
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WordDetailScreen(word: word),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isHighlighted 
-                              ? Colors.orange.shade600 
-                              : _getPartOfSpeechColor(word.partOfSpeech),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            word.partOfSpeech,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                    Text(
+                      'Tap any row to edit',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        fontSize: 14,
                       ),
                     ),
                   ],
-                );
-              }).toList(),
-            ),
+                ),
+              ),
+            ],
           );
         },
       ),

@@ -34,10 +34,17 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     _notesController = TextEditingController(text: widget.word.notes ?? '');
     _selectedPartOfSpeech = widget.word.partOfSpeech;
 
+    // Debug logging for initial notes
+    print('WordDetailScreen: Initial notes for ${widget.word.spanish}: "${widget.word.notes}"');
+    print('WordDetailScreen: Notes controller text: "${_notesController.text}"');
+
     // Listen for changes to detect when to enable/disable update button
     _spanishController.addListener(_checkForChanges);
     _englishController.addListener(_checkForChanges);
-    _notesController.addListener(_checkForChanges);
+    _notesController.addListener(() {
+      print('WordDetailScreen: Notes changed to: "${_notesController.text}"');
+      _checkForChanges();
+    });
   }
 
   @override
@@ -51,19 +58,30 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
   void _checkForChanges() {
     final newWord = VocabWord(
       id: _originalWord.id,
-      spanish: _spanishController.text.trim(),
-      english: _englishController.text.trim(),
+      spanish: _spanishController.text,
+      english: _englishController.text,
       partOfSpeech: _selectedPartOfSpeech,
       timestamp: _originalWord.timestamp,
-      notes: _notesController.text.trim(),
+      notes: _notesController.text,
     );
 
-    final hasChanges = _originalWord.spanish != newWord.spanish ||
-        _originalWord.english != newWord.english ||
-        _originalWord.partOfSpeech != newWord.partOfSpeech ||
-        _originalWord.notes != newWord.notes;
+    final spanishChanged = _originalWord.spanish != newWord.spanish;
+    final englishChanged = _originalWord.english != newWord.english;
+    final partOfSpeechChanged = _originalWord.partOfSpeech != newWord.partOfSpeech;
+    final notesChanged = _originalWord.notes != newWord.notes;
+
+    // Debug logging for notes comparison
+    if (notesChanged) {
+      print('WordDetailScreen: Notes change detected!');
+      print('  Original notes: "${_originalWord.notes}"');
+      print('  New notes: "${newWord.notes}"');
+      print('  Notes controller text: "${_notesController.text}"');
+    }
+
+    final hasChanges = spanishChanged || englishChanged || partOfSpeechChanged || notesChanged;
 
     if (hasChanges != _hasChanges) {
+      print('WordDetailScreen: Change state updated - hasChanges: $hasChanges');
       setState(() {
         _hasChanges = hasChanges;
         _currentWord = newWord;
@@ -196,7 +214,30 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
 
     try {
       final firebaseService = FirebaseService();
-      await firebaseService.updateVocabWord(_currentWord);
+      
+      // Get the current text from controllers and trim for database
+      final spanishText = _spanishController.text.trim();
+      final englishText = _englishController.text.trim();
+      final notesText = _notesController.text.trim();
+      
+      // Create a trimmed version for saving to database
+      final trimmedWord = VocabWord(
+        id: _currentWord.id,
+        spanish: spanishText,
+        english: englishText,
+        partOfSpeech: _selectedPartOfSpeech,
+        timestamp: _currentWord.timestamp,
+        notes: notesText.isEmpty ? null : notesText,
+      );
+      
+      // Debug logging
+      print('Updating word: ${trimmedWord.spanish}');
+      print('Spanish controller text: "${_spanishController.text}"');
+      print('Spanish trimmed: "${spanishText}"');
+      print('Notes before update: "${trimmedWord.notes}"');
+      print('Notes length: ${trimmedWord.notes?.length ?? 0}');
+      
+      await firebaseService.updateVocabWord(trimmedWord);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -207,12 +248,20 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
         );
         
         // Update the original word to reflect the changes
-        _originalWord = _currentWord;
+        _originalWord = trimmedWord;
+        
+        // Update the controllers with the trimmed values
+        _spanishController.text = spanishText;
+        _englishController.text = englishText;
+        _notesController.text = notesText;
+        
         setState(() {
           _hasChanges = false;
+          _currentWord = trimmedWord;
         });
       }
     } catch (e) {
+      print('Error updating word: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
