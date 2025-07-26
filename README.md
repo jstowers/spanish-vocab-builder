@@ -4,9 +4,13 @@ Saturday, July 26, 2025
 
 ## Motivation
 
-I want to build a Dart/Flutter app that allows me to enter Spanish words and their English definitions and saves them in a Google Firebase database.
+I want to use Cursor to build a Dart/Flutter mobile app that allows me to enter Spanish words and their English definitions and saves them in a Google Firebase database.
 
-When I click a button Add Word, I want three fields in a column:
+I want to explore and understand Cursor's functionality, interactions, and limitations, especially as it relates to Dart/Flutter mobile development.
+
+## Specification
+
+When I click a button Add Word, I want to see three fields in a column:
 1. Spanish word
 2. English definition
 3. Part of speech
@@ -22,7 +26,7 @@ The `Part of speech` dropdown will have the following values:
 
 Below these fields will be a `Save word` button.  When I click this button, the vocab data will be saved in my Firestore database.
 
-When I click a button `Show words`, I want to see a table of the vocabulary words presenting in alphabetical order in Spanish.
+When I click a button `Show words`, I want to see a table of the vocabulary words presented in alphabetical order in Spanish.
 
 ## Features
 
@@ -62,17 +66,17 @@ lib/
 
 ### Prerequisites
 - Flutter SDK (3.32.7 or higher)
-- Dart SDK (v3.8.1 or higher)
+- Dart SDK (3.8.1 or higher)
 - Google Firebase project
-- iOS or Android phone simulator
+- iOS or Android mobile phone simulator
 
 ### Installation
 
 1. __Clone the repository__
    
    ```bash
-   git clone <repository-url>
-   cd spanish-vocab
+   git clone git@github.com:jstowers/spanish-vocab-builder.git
+   cd spanish-vocab-builder
    ```
 
 2. __Install dependencies__
